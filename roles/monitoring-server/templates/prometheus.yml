@@ -29,7 +29,7 @@ scrape_configs:
     static_configs:
       - targets:
       {% for item in client_config %}
-         - '{{ item.client_ip }}:{{item.cadvisor_port}}',
+         - '{{ item.client_ip }}:{{item.cadvisor_port}}'
       {% endfor %}
 #      - targets: ['kube-test-1:8080', 'kube-test-2:8080']
 #        - targets: ['cadvisor:8080']

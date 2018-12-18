@@ -1,4 +1,4 @@
-server_config:
+client_config:
 - client_ip: "kube-test-1"
   nodeexporter_port: 9100
   cadvisor_port: 8080
