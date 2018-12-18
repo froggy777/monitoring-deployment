@@ -19,6 +19,9 @@ scrape_configs:
     static_configs:
       - [{% for item in client_config %}
       '{{ item.client_ip }}:{{item.nodeexporter_port}} ',
+      {% endfor %}
+      {% for item in server_config %}
+      '{{ item.client_ip }}:{{item.nodeexporter_port}} '
       {% endfor %} ]
 #      - targets: ['kube-test-1:9100', 'kube-test-2:9100']
 #      - targets: ['nodeexporter:9100', 'kube-test-2:9100']
@@ -28,7 +31,11 @@ scrape_configs:
     static_configs:
       - [{% for item in client_config %}
         '{{ item.client_ip }}:{{item.cadvisor_port}} ',
-      {% endfor %} ]
+      {% endfor %}
+     {% for item in server_config %}
+     '{{ item.client_ip }}:{{item.cadvisor_port}} ',
+     {% endfor %}
+      ]
 #      - targets: ['kube-test-1:8080', 'kube-test-2:8080']
 #        - targets: ['cadvisor:8080']
 
