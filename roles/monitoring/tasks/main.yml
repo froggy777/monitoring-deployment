@@ -1,0 +1,65 @@
+- name: Install packages
+  package:
+    name: "{{item}}"
+    state: present
+  with_items:
+    - "python-pip"
+    - "git"
+
+- name: Create directories
+  file:
+    path: "{{item}}"
+    owner: root
+    group: root
+    state: directory
+    mode: 0755
+  with_items:
+    - "{{DOCKPROM_DIR}}"
+
+- name: git clone repo
+- git:
+    repo: 'https://foosball.example.org/path/to/repo.git'
+    dest: "{{DOCKPROM_DIR}}"
+
+- name: Up nodeexporter docker
+  docker:
+    image: prom/node-exporter:v0.17.0
+    name: nodeexporter
+#    user: root
+    state: restarted
+    privileged: yes
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|host|etc)($$|/)'
+    restart_policy: unless-stopped
+    ports:
+      - "{{nodeexporter_port}}:9100"
+#    network_mode: host
+    labels:
+      org.label-schema.group: "monitoring"
+  tags: ["nodeexporter"]
+
+- name: Up cAdvisor docker
+  docker:
+    image: google/cadvisor:v0.32.0
+    name: cadvisor
+    state: restarted
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /cgroup:/cgroup:ro
+    restart_policy: unless-stopped
+    ports:
+      - "{{cadvisor_port}}:8080"
+#    network_mode: host
+    labels:
+      org.label-schema.group: "monitoring"
+  tags: ["cadvisor"]
+

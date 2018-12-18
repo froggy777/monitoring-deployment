@@ -1,0 +1,5 @@
+DOCKPROM_DIR: "/webpub/www/dockprom/"
+client_config:
+- client_ip: "{{ansible_host}}"
+  nodeexporter_port: 9100
+  cadvisor_port: 8080

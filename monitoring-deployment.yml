@@ -1,0 +1,15 @@
+---
+# This playbook deploys zabbix-agent
+#
+# Add excluded servers to 'hosts' with !. Example:
+#                                   - "!test.server.com"
+
+- name: Installing zabbix agent
+  hosts:
+    - monitoring
+  become: true
+  become_method: sudo
+  gather_facts: yes
+  roles:
+    - monitoring
+
