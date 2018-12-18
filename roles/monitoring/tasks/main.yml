@@ -17,7 +17,7 @@
     - "{{DOCKPROM_DIR}}"
 
 - name: git clone repo
-- git:
+  git:
     repo: 'https://foosball.example.org/path/to/repo.git'
     dest: "{{DOCKPROM_DIR}}"
 
