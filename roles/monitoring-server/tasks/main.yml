@@ -28,13 +28,13 @@
     backup: yes
   tags: ['config-prometheus']
 
-- name: copy prometheus.yml
+- name: copy dashboards
   template:
     src: dashboards/docker_container.json
     dest: "{{DOCKPROM_DIR}}/grafana/dashboards/dc-{{item.client_ip}}.json"
     backup: yes
   with_items:
-    - client_config
+    - "{{client_config}}"
   tags: ['config-dashboard']
 
 - name: copy docker-compose.yml
