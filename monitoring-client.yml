@@ -4,12 +4,12 @@
 # Add excluded servers to 'hosts' with !. Example:
 #                                   - "!test.server.com"
 
-- name: Installing zabbix agent
+- name: Installing monitoring agent
   hosts:
     - monitoring
   become: true
   become_method: sudo
   gather_facts: yes
   roles:
-    - monitoring
+    - monitoring-client
 

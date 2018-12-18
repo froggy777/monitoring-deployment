@@ -1,0 +1,36 @@
+- name: Install packages
+  package:
+    name: "{{item}}"
+    state: present
+  with_items:
+    - "python-pip"
+    - "git"
+
+- name: Create directories
+  file:
+    path: "{{item}}"
+    owner: root
+    group: root
+    state: directory
+    mode: 0755
+  with_items:
+    - "{{DOCKPROM_DIR}}"
+
+- name: git clone repo
+  git:
+    repo: 'https://foosball.example.org/path/to/repo.git'
+    dest: "{{DOCKPROM_DIR}}"
+
+- name: copy prometheus.yml
+  template:
+    src: prometheus.yml
+    dest: "{{DOCKPROM_DIR}}/prometheus/prometheus.yml"
+    backup: yes
+  tags: ['config-prometheus']
+
+- name: copy docker-compose.yml
+  template:
+    src: docker-compose.yml
+    dest: "{{DOCKPROM_DIR}}/docker-compose.yml"
+    backup: yes
+  tags: ['config-docker-compose']
